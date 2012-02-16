@@ -1,0 +1,9 @@
+.idea/
+.bundle/
+pkg/
+coverage/
+log/
+tmp/
+*.html
+*.log
+
