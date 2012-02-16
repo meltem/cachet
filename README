@@ -1,0 +1,50 @@
+Just initialize the cache, by configuring your store.
+Just add the configuration to your config initializers
+
+require 'cachet'
+
+Cachet.setup do |config|
+  config.logger =  Rails.logger
+  config.storage   = Cachet::FileStore.new("/pal_storage/path")
+
+  # The followings are the configurations that you can do on file store
+  # The given values are the default ones, if you are OK with them you don't need
+  # to configure at all.
+  # You can set whether you want directory optimization or not
+  # file_store.optimize = TRUE
+  # The depth of directories you want
+  # file_store.dir_levels = 3
+  # Number of directories within a directory, it is better if you use a prime number
+  # but something other than 31, that is the one we use for hashing :)
+  # file_store.dir_count = 19
+end
+
+And from this point forward , if you want return values of your methods to be cached;
+
+#include cacheable module , which will add two class macros to mark a method as cacheable and also as cache invalidator.
+You should pass blocks to these marcos which will return cache keys. Use exact signature of the method that you are referring in the block that returns the key.
+
+
+class Sample
+  include Cachet::Cacheable
+
+  def first (param1, param2)
+    puts "First is running"
+    return "First"
+  end
+
+
+  def second (param1, param2)
+    puts "Second is running and invalidating for #{param1}"
+    return "First"
+  end
+
+  cacheable :first, :car do |param1, param2|
+    param1
+  end
+
+  cache_invalidator :second, :car do |param1, param2|
+    param1
+  end
+
+end
