@@ -6,6 +6,7 @@ require 'cachet'
 Cachet.setup do |config|
   config.logger =  Rails.logger
   config.storage   = Cachet::FileStore.new("/pal_storage/path")
+  config.enabled = true
 
   # The followings are the configurations that you can do on file store
   # The given values are the default ones, if you are OK with them you don't need
