@@ -21,7 +21,9 @@ module Cachet
         define_method("#{cached_method}_with_cache_invalidation") { |*args|
           cache_key = block_given? ? yield(*args) : cached_method.to_s
           method("#{cached_method}_without_cache_invalidation".to_sym).call(*args)
-          Cachet.invalidate(entity, cache_key)
+          (entity.kind_of?(Array) ? entity : [entity]).each do |ent|
+            Cachet.invalidate(ent, cache_key)
+          end
         }
         alias_method_chain "#{cached_method}".to_sym, :cache_invalidation
         Cachet.logger.debug "Aliasing method : #{cached_method} to invalidate the #{entity} entities"
