@@ -9,7 +9,7 @@ module Cachet
 
     def initialize(root)
       @root = root
-      FileUtils.mkdir_p root, :mode=>0755
+      FileUtils.mkdir_p root
       @optimize = TRUE
       @dir_level = 3
       @dir_count = 19
@@ -23,7 +23,7 @@ module Cachet
     def write(entity, key, data_to_be_stored)
       file_name = storage_path(entity, key)
       temp_file_name = file_name + '.' + Thread.current.object_id.to_s
-      FileUtils.mkdir_p File.dirname(file_name), :mode => 755
+      FileUtils.mkdir_p File.dirname(file_name)
       File.open(temp_file_name, 'wb') { |f| f.write(Marshal.dump(data_to_be_stored)) }
       if File.exist?(file_name)
         File.unlink temp_file_name
@@ -41,6 +41,17 @@ module Cachet
         Cachet.logger.warn "An element of #{entity} in the cache with key:#{key} to path #{file_name}entity has could not be deleted."
       end
       Cachet.logger.info "An element of #{entity} in the cache with key:#{key} to path #{file_name}entity has been removed from the cache."
+    end
+
+    def entities
+      Dir.entries(root).reject { |entry| entry =='.' || entry == '..' }.inject({}) do |entities, entity|
+        entities[entity] = Dir["#{root}/#{entity}/**/*"].count { |file| File.file?(file) }
+        entities
+      end
+    end
+
+    def remove_entity(entity)
+      FileUtils.remove_dir File.join root, entity
     end
 
     def storage_path(entity, key)

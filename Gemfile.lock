@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    cachet (0.0.0)
+    cachet (0.0.1)
       rails (>= 3.0.0)
 
 GEM

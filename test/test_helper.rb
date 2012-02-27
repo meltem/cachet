@@ -4,4 +4,5 @@ require 'cachet'
 
 Cachet.setup do |config|
   config.logger =  Logger.new(STDOUT)
+  config.enabled = true
 end

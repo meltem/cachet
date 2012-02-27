@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = 'cachet'
-  s.version = '0.0.0'
-  s.date = '2012-02-07'
+  s.version = '0.0.1'
+  s.date = '2012-02-27'
   s.summary = "Caches method responses to have a better performance!"
   s.description = "Provides a way to cache and invalidate return values of your time consuming methods."
   s.authors = ["Meltem Atesalp", "Umut Utkan"]
